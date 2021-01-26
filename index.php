@@ -11,6 +11,6 @@ $headerText = "Header";
 </head>
 <body>
 <h1><?=$headerText?></h1>
-<footer>текущий год: <?=$year?></footer>
+<footer>текущий год: <?=$year?></footer> <!-- урок 2, задание 5 -->
 </body>
 </html>
