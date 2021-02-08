@@ -1,28 +1,13 @@
 <?php
-
-function makeGallery ($imgDir) {
-    $dir = @opendir($imgDir) or die("There is an error with your image directory!");
-    $arrImg = [];
-    while ($file = readdir($dir)) //поиск по файлам
-    {
-        if (!is_dir($file)){
-            $arrImg[] = $imgDir . '/' . $file;
-        }
-    }
-    closedir($dir); //закрыть папку
-    return $arrImg;
-}
-$imgDir = "img";
-$gallery = makeGallery($imgDir);
-
-
-
+include "gallery_db_connect.php";
+include "make_gallery.php";
+$gallery = makeGallery($connection);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Изображения из папки <?=$imgDir?></title>
+    <title>Images</title>
     <style>
         body {
             background-color: #c9c9c9;
@@ -51,9 +36,9 @@ $gallery = makeGallery($imgDir);
 <body>
 <h1>Картиночки</h1>
 <div>
-<?php foreach ($gallery as $filePath): ?>
-    <a href="<?=$filePath;?>" target="_blank">
-        <img class="pict" width="150" src="<?=$filePath;?>"/>
+<?php foreach ($gallery as $image): ?>
+    <a href="<?="view_image.php?id=" . $image["id"];?>" target="_blank">
+        <img class="pict" width="150" src="<?=$image["path"] . "\\" . $image["name"] . "." . $image["ext"];?>"/>
     </a>
 <?php endforeach;?>
 </div>
