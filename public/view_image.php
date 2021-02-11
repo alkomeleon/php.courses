@@ -14,7 +14,7 @@ $img = mysqli_fetch_assoc($res);
         body {
             background-color: #c9c9c9;
             padding: 30px;
-            text-align: center;
+            margin: 20px;
         }
         a {
             text-decoration: none;
@@ -26,17 +26,49 @@ $img = mysqli_fetch_assoc($res);
         .pict {
             border: grey 3px solid;
             transition: all 0.2s;
-            margin: auto;
+            margin-top: 20px;
+            margin-right: 20px;
             width: <?=$img["width"];?>px;
             height: <?=$img["height"];?>px;
+        }
+        .description {
+            margin-top: 20px;
+            color: grey;
+            font-family: Arial;
+            font-weight: bold;
+            text-align: left;
+        }
+        .button {
+            font-family: Arial;
+            background-color: gray;
+            color: white;
+            font-weight: bold;
+            border-radius: 5%;
+            width: 150px;
+            transition: all 0.2s;
+            border: none;
+            padding: 6px;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: lightcoral;
         }
 
     </style>
 </head>
 <body>
+<a class="button" href="hw4.php">back</a>
 <h1>
     <?=$img["name"];?>.<?=$img["ext"];?>
 </h1>
-    <img class="pict" width="<?=$img["width"];?>" height="<?=$img["height"];?>" src="<?=$img["path"] . "\\" . $img["name"] . "." . $img["ext"];?>"/>
+<div style="display: flex; flex-direction: row">
+    <img class="pict" width="<?=$img["width"];?>" height="<?=$img["width"];?>" src="<?=$img["path"] . "\\" . $img["name"] . "." . $img["ext"];?>"/>
+    <div class="description">
+        DETAILED DESCRIPTION: <?=$img["desc"];?> <br>
+        SIZE: <?=$img["width"];?> x <?=$img["width"];?><br>
+        PRICE: <?=$img["price"];?> $
+    </div>
+</div>
+
 </body>
 </html>
