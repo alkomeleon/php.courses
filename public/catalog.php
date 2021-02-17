@@ -1,7 +1,7 @@
 <?php
-include "gallery_db_connect.php";
+include "db.php";
 include "make_gallery.php";
-$gallery = makeGallery($connection);
+$gallery = makeGallery(getConnection());
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +21,12 @@ $gallery = makeGallery($connection);
         h1 {
             color: grey;
             font-family: Arial;
+            text-transform: uppercase;
+        }
+        .menu {
+            display: flex;
+            align-content: flex-end;
+            align-items: center;
         }
         .pict {
             margin: 5px;
@@ -34,8 +40,6 @@ $gallery = makeGallery($connection);
             box-shadow: 0px 0px 34px 15px rgba(255,255,255,1);
         }
         .product {
-            /*width: 160px;*/
-            /*height: 200px;*/
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -49,6 +53,7 @@ $gallery = makeGallery($connection);
         }
         .button {
             font-family: Arial;
+            text-transform: uppercase;
             background-color: gray;
             color: white;
             font-weight: bold;
@@ -65,14 +70,18 @@ $gallery = makeGallery($connection);
     </style>
 </head>
 <body>
-<h1>Products</h1>
+<div class="menu">
+    <h1>Products</h1>
+    <?php include "menu.html"?>
+</div>
 <div class="products">
 <?php foreach ($gallery as $image): ?>
     <div class="product">
         <a href="<?="view_image.php?id=" . $image["id"];?>">
             <img class="pict" width="150" src="<?=$image["path"] . "\\" . $image["name"] . "." . $image["ext"];?>"/>
         </a>
-        <a class="button" href="<?="view_image.php?id=" . $image["id"];?>">Check</a>
+        <a href="<?="view_image.php?id=" . $image["id"];?>"></a>
+        <a class="button" href="cart.php?action=add&id=<?=$image["id"];?>" style="margin-top: 20px">add to cart</a>
     </div>
 <?php endforeach;?>
 </div>
