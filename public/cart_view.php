@@ -1,15 +1,25 @@
 <?php
 include "db.php";
-$id = (int) $_GET['id'];
-$sql = "SELECT * FROM images WHERE id=$id";
-$res = mysqli_query(getConnection(), $sql);
-$img = mysqli_fetch_assoc($res);
+include "make_gallery.php";
+
+session_start();
+$cart = [];
+
+foreach ($_SESSION['cart'] as $id => $count){
+    $sql = "SELECT * FROM images WHERE id=$id";
+    $res = mysqli_query(getConnection(), $sql);
+    $cartItem = mysqli_fetch_assoc($res);
+    $cartItem["count"] = $count;
+    $cart[] = $cartItem;
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Images</title>
+    <title>Cart</title>
     <style>
         body {
             background-color: #c9c9c9;
@@ -60,18 +70,22 @@ $img = mysqli_fetch_assoc($res);
 <body>
     <a class="button" href="catalog.php">back</a>
     <?php include "menu.html"?>
-    <h1>
-        <?=$img["name"];?>.<?=$img["ext"];?>
-    </h1>
+
+    <?php foreach ($cart as $item): ?>
     <div style="display: flex; flex-direction: row">
-        <img class="pict" width="<?=$img["width"];?>" height="<?=$img["width"];?>" src="<?=$img["path"] . "\\" . $img["name"] . "." . $img["ext"];?>"/>
+        <img class="pict" width="150px" height="150px" src="<?=$item["path"] . "\\" . $item["name"] . "." . $item["ext"];?>"/>
         <div class="description">
-            DETAILED DESCRIPTION: <?=$img["desc"];?> <br>
-            SIZE: <?=$img["width"];?> x <?=$img["width"];?><br>
-            PRICE: <?=$img["price"];?> $<br><br>
-            <a href="cart.php?action=add&id=<?=$img["id"];?>" class="button">add to cart</a>
+            NAME: <?=$item["name"];?>.<?=$item["ext"];?><br>
+            DETAILED DESCRIPTION: <?=$item["desc"];?><br>
+            SIZE: <?=$item["width"];?> x <?=$item["width"];?><br>
+            PRICE: <?=$item["price"]*$item["count"];?> $<br>
+            COUNT: <?=$item["count"];?><br><br>
+            <a href="cart.php?action=add&id=<?=$item["id"];?>" class="button">add</a>
+            <a href="cart.php?action=remove&id=<?=$item["id"];?>" class="button">remove</a>
         </div>
     </div>
+    <?php endforeach;?>
+
 
 </body>
 </html>
