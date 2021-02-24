@@ -20,6 +20,7 @@ foreach ($_SESSION['cart'] as $id => $count){
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
+    <script src="fetch.js"></script>
     <style>
         body {
             background-color: #c9c9c9;
@@ -80,12 +81,16 @@ foreach ($_SESSION['cart'] as $id => $count){
             SIZE: <?=$item["width"];?> x <?=$item["width"];?><br>
             PRICE: <?=$item["price"]*$item["count"];?> $<br>
             COUNT: <?=$item["count"];?><br><br>
-            <a href="cart.php?action=add&id=<?=$item["id"];?>" class="button">add</a>
-            <a href="cart.php?action=remove&id=<?=$item["id"];?>" class="button">remove</a>
+            <a class="button" onclick="post('cart_add.php?id=<?=$item["id"];?>',true)">add to cart</a>
+            <a class="button" onclick="post('cart_remove.php?id=<?=$item["id"];?>',true)">remove</a>
         </div>
     </div>
     <?php endforeach;?>
-
-
+    <br>
+    <br>
+    <br>
+    <?if (count($cart) > 0):?>
+    <a href="cart_make_order.php" class="button">make order</a>
+    <?php endif; ?>
 </body>
 </html>

@@ -28,7 +28,7 @@ $user = getUserById($_SESSION['user_id']);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Images</title>
+    <title>Profile</title>
 </head>
 <body>
 <div>
