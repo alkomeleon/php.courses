@@ -1,6 +1,7 @@
 <?php
 include "db.php";
 include "make_gallery.php";
+
 $gallery = makeGallery(getConnection());
 ?>
 <!DOCTYPE html>
@@ -8,6 +9,7 @@ $gallery = makeGallery(getConnection());
 <head>
     <meta charset="UTF-8">
     <title>Images</title>
+    <script src="fetch.js"></script>
     <style>
         body {
             background-color: #c9c9c9;
@@ -74,16 +76,16 @@ $gallery = makeGallery(getConnection());
     <h1>Products</h1>
     <?php include "menu.html"?>
 </div>
-<div class="products">
-<?php foreach ($gallery as $image): ?>
-    <div class="product">
-        <a href="<?="view_image.php?id=" . $image["id"];?>">
-            <img class="pict" width="150" src="<?=$image["path"] . "\\" . $image["name"] . "." . $image["ext"];?>"/>
-        </a>
-        <a href="<?="view_image.php?id=" . $image["id"];?>"></a>
-        <a class="button" href="cart.php?action=add&id=<?=$image["id"];?>" style="margin-top: 20px">add to cart</a>
+    <div class="products">
+    <?php foreach ($gallery as $image): ?>
+        <div class="product">
+            <a href="view_image.php?id=<?=$image["id"];?>">
+                <img class="pict" width="150" src="<?=$image["path"] . "\\" . $image["name"] . "." . $image["ext"];?>"/>
+            </a>
+            <a href="view_image.php?id=<?=$image["id"];?>"></a>
+            <a class="button" onclick="post('cart_add.php?id=<?=$image["id"];?>')">add to cart</a>
+        </div>
+    <?php endforeach;?>
     </div>
-<?php endforeach;?>
-</div>
 </body>
 </html>

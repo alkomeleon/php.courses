@@ -1,17 +1,30 @@
 <?php
 include "db.php";
+session_start();
 
-$id = (int) $_GET['id'];
-$sql = "SELECT * FROM images WHERE id=$id";
+
+$sql = "INSERT INTO `gallery`.`order` (`user_id`, `address`) VALUES ('" . $_SESSION['user_id']. "', 'address');";
 $res = mysqli_query(getConnection(), $sql);
-$img = mysqli_fetch_assoc($res);
+$order_id = mysqli_insert_id(getConnection());
+
+
+foreach ($_SESSION['cart'] as $id => $count){
+    $sql = "SELECT * FROM images WHERE id=$id";
+    $res = mysqli_query(getConnection(), $sql);
+    $cartItem = mysqli_fetch_assoc($res);
+    $sql = "INSERT INTO `gallery`.`order_info` (`order_id`, `prod_id`, `count`, `price`) VALUES ($order_id, $id, $count," . $cartItem['price'] . ")";
+    $res = mysqli_query(getConnection(), $sql);
+}
+
+$_SESSION['cart'] = [];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Images</title>
-    <script src="fetch.js"></script>
+    <title>Cart</title>
     <style>
         body {
             background-color: #c9c9c9;
@@ -62,18 +75,8 @@ $img = mysqli_fetch_assoc($res);
 <body>
     <a class="button" href="catalog.php">back</a>
     <?php include "menu.html"?>
-    <h1>
-        <?=$img["name"];?>.<?=$img["ext"];?>
-    </h1>
-    <div style="display: flex; flex-direction: row">
-        <img class="pict" width="<?=$img["width"];?>" height="<?=$img["width"];?>" src="<?=$img["path"] . "\\" . $img["name"] . "." . $img["ext"];?>"/>
-        <div class="description">
-            DETAILED DESCRIPTION: <?=$img["desc"];?> <br>
-            SIZE: <?=$img["width"];?> x <?=$img["width"];?><br>
-            PRICE: <?=$img["price"];?> $<br><br>
-            <a class="button" onclick="post('cart_add.php?id=<?=$img["id"];?>')">add to cart</a>
-        </div>
-    </div>
+
+    <div>Ваш заказ успешно оформлен</div>
 
 </body>
 </html>
